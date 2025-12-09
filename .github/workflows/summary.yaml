@@ -10,9 +10,12 @@ jobs:
     steps:
       # Checkout only needed for developing
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Watch GitHub Checks
         uses: ./
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          delay: 5s
+          #match_pattern: test.*
+          #ignore_pattern: lint.*

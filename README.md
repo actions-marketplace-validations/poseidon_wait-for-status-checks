@@ -1,12 +1,14 @@
 # wait-for-status-checks
 [![test](https://github.com/poseidon/wait-for-status-checks/actions/workflows/test.yaml/badge.svg)](https://github.com/poseidon/wait-for-status-checks/actions/workflows/test.yaml)
+[![Sponsors](https://img.shields.io/github/sponsors/poseidon?logo=github)](https://github.com/sponsors/poseidon)
+[![Mastodon](https://img.shields.io/badge/follow-news-6364ff?logo=mastodon)](https://fosstodon.org/@poseidon)
 
 `wait-for-status-checks` is a GitHub Action that polls the GitHub Check Runs on a Pull Request and waits until all runs succeed (or are skipped) or one of them fails. It provides a way to enforce "require _triggered_ checks pass" vs. GitHub's naive "require checks to pass".
 
 ## Features
 
 * Wait for GitHub Check Runs on a Pull Request
-* Configure the poll `interval` and `timeout`
+* Configure the poll `interval`, `timeout` and `delay`
 * Use as a "required check" to monitor other check runs
 
 ## Overview
@@ -45,7 +47,7 @@ jobs:
       checks: read
     steps:
       - name: GitHub Checks
-        uses: poseidon/wait-for-status-checks@v0.1.0
+        uses: poseidon/wait-for-status-checks@v0.6.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -54,12 +56,15 @@ The action knows to exclude its own check run (i.e. the GitHub Actions job that 
 
 ### Inputs
 
-| Input | Example | Default | Description |
-|-------|---------|---------|-------------|
-| token | ${{ secrets.GITHUB_TOKEN }} | | GitHub token with `checks: read` |
-| interval | 10s | 10s | Interval in seconds to poll GitHub Check runs |
-| timeout | 300s | 3600s | Timeout in seconds to poll GitHub Check runs |
-| ignore  | foo,bar | | GitHub checks that should be ignored |
+| Input            | Example                     | Default | Description                                                      |
+|------------------|-----------------------------|---------|------------------------------------------------------------------|
+| token            | ${{ secrets.GITHUB_TOKEN }} |         | GitHub token with `checks: read`                                 |
+| interval         | 10s                         | 10s     | Interval in seconds to poll GitHub Check runs                    |
+| timeout          | 300s                        | 3600s   | Timeout in seconds to poll GitHub Check runs                     |
+| delay            | 5s                          | 0s      | Period in seconds to wait before first poll of GitHub Check Runs |
+| match_pattern    | prod.*                      |         | Regex match GitHub checks that should be watched                 |
+| ignore_pattern   | lint.*                      |         | Regex match GitHub checks that should be ignored                 |
+| ignore           | foo,bar                     |         | GitHub checks that should be ignored                             |
 
 ## Alternatives
 
